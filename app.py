@@ -25,6 +25,7 @@ import json
 import random
 
 # import random
+# Procfile: --workers 4 --timeout 120
 
 # Create an instance of Flask
 app=Flask(__name__)
@@ -44,7 +45,7 @@ def stocks():
 	start_date=request.form.get('startdate')
 	end_date=request.form.get('enddate')
 	start_time=time.time()
-	movements_df=get_data(random.sample(sym_list, 30), start_date, end_date)
+	movements_df=get_data(random.sample(sym_list, 25), start_date, end_date)
 	print(f'Fetch data took {time.time()-start_time} seconds. ')
 	start_time=time.time()
 	result=cluster(movements_df)
