@@ -27,9 +27,9 @@ import json
 app=Flask(__name__)
 
 sym_list=['AMZN', 'AAPL', 'WBA', 'NOC', 'BA', 'LMT', 'MCD', 'INTC', 'NEE', 'IBM', 
-		  # 'TXN', 'MA', 'MSFT', 'GE', 'GOOGL', 'AXP', 'PEP', 'KO', 'JNJ', 'GM', 
-		  # 'HCA', 'AMGN', 'JPM', 'NFLX', 'UNH', 'V', 'VMC', 'VZ', 'LNC', 'WM', 
-		  # 'TGT', 'PLD', 'CVX', 'PXD', 'PGR', 'NUE', 'TJX', 'MMM', 'MDT', 'LLY', 
+		  'TXN', 'MA', 'MSFT', 'GE', 'GOOGL', 'AXP', 'PEP', 'KO', 'JNJ', 'GM', 
+		  'HCA', 'AMGN', 'JPM', 'NFLX', 'UNH', 'V', 'VMC', 'VZ', 'LNC', 'WM', 
+		  'TGT', 'PLD', 'CVX', 'PXD', 'PGR', 'NUE', 'TJX', 'MMM', 'MDT', 'LLY', 
 		  'MAS', 'KR', 'ABC', 'AMAT', 'DE', 'UPS', 'LEN', 'WHR', 'ADBE', 'CE']
 
 @app.route("/")
