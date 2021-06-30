@@ -23,6 +23,8 @@ import plotly
 import plotly.express as px
 import json
 
+# import random
+
 # Create an instance of Flask
 app=Flask(__name__)
 
@@ -41,7 +43,7 @@ def stocks():
 	start_date=request.form.get('startdate')
 	end_date=request.form.get('enddate')
 	start_time=time.time()
-	movements_df=get_data(sym_list, start_date, end_date)
+	movements_df=get_data(random.choice(sym_list, 40), start_date, end_date)
 	print(f'Fetch data took {time.time()-start_time} seconds. ')
 	start_time=time.time()
 	result=cluster(movements_df)
