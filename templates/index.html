@@ -21,7 +21,7 @@
     </h1>
     <div class="container">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-4">
           <aside class="filters">
             <div class="panel panel-default">
               <!-- <p>Enter a date range to see how 50 preselected stocks are clustered based on their normalized movement.</p> -->
@@ -32,27 +32,39 @@
                   <div class="form-group">
                     <ul class="list-group" id="filters">
                       <li class="filter list-group-item">
+                        <label for="portfolio">Enter List of Symbols in Your Portfolio, Separated by ";"</label>
+                        <input class="form-control" id="portfolio" type="text" placeholder="TSLA; GOOGL; FB; GME; AMC" name="portfolio">
+                      </li>
+                      <select id='timeframe' name='timeframe' style='width: 90%; margin: 10px 15px;'>
+                        <option value='half' name='half'>6 Months Look Back</option>
+                        <option value='full' name='full'>1 Year Look Back</option>
+                      </select>
+                      <!-- 
+                      <li class="filter list-group-item">
                         <label for="date">Enter Start Date</label>
                         <input class="form-control" id="startdate" type="text" placeholder="2011-05-20" name="startdate">
                       </li>
                       <li class="filter list-group-item">
                         <label for="date">Enter End Date</label>
                         <input class="form-control" id="enddate" type="text" placeholder="2021-05-20" name="enddate">
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
-                  <button id="filter-btn" class="btn btn-primary">Start Analysis</button>
+                  <button id="filter-btn" class="btn btn-primary" style='margin: 10px 15px'>Start Analysis</button>
 <!--                   <button id="filter-btn" type='submit' class="btn btn-primary">Filter Table</button> -->
                 </form>
               </div>
             </div>
           </aside>
-        </div>
-        <div class="col-md-2">
           <div id="table-area" class="">
             {{ output | safe}}
           </div>
         </div>
+<!--         <div class="col-md-2">
+          <div id="table-area" class="">
+            {{ output | safe}}
+          </div>
+        </div> -->
         <div class="col-md-8">
           <div id="chart" class="chart"></div>
         </div>
@@ -61,6 +73,17 @@
           <img src="{{url_for('static', filename='charts/cluster_1.png')}}">
         </div> -->
       </div>
+      {% for image_row in images | batch(3, '&nbsp;') %}
+        <div class="row">
+          {% for image in image_row %}
+          <div class="col-md-4">
+            <figure>
+              <img class='img-thumbnail' src='static/images/fig_{{image}}.png'/>
+            </figure>
+          </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
     </div>
     <footer class="footer">
       <span class="bottom">Stock Market Movement</span>

@@ -23,6 +23,7 @@ import plotly
 import plotly.express as px
 import json
 import random
+from datetime import date, timedelta
 
 # import random
 # Procfile: --workers 4 --timeout 120
@@ -40,12 +41,29 @@ sym_list=['AMZN', 'AAPL', 'WBA', 'NOC', 'BA', 'LMT', 'MCD', 'INTC', 'NEE', 'IBM'
 def home():
 	return render_template("index.html")
 
+def get_symbols(symbol_string):
+	return [each_symbol.strip() for each_symbol in symbol_string.split(';')]
+
 @app.route('/stocks', methods=['GET', 'POST'])
 def stocks(): 
-	start_date=request.form.get('startdate')
-	end_date=request.form.get('enddate')
+	portfolio=request.form.get('portfolio')
+	print(portfolio)
+	sym_list=get_symbols(portfolio)
+	print(sym_list)
+	timeframe=request.form.get("timeframe")
+	if timeframe=='half': 
+		start_date=(date.today()-timedelta(days=180)).strftime('%Y-%m-%d')
+	else: 
+		start_date=(date.today()-timedelta(days=360)).strftime('%Y-%m-%d')
+	end_date=date.today().strftime('%Y-%m-%d')
+	# start_date=request.form.get('startdate')
+	# end_date=request.form.get('enddate')
 	start_time=time.time()
-	movements_df=get_data(random.sample(sym_list, 25), start_date, end_date)
+	if len(sym_list)<5: 
+		sym_list=['TSLA', 'GOOGL', 'FB', 'GME', 'AMC']
+	if len(sym_list)>50: 
+		sym_list=random.sample(sym_list, 50)
+	movements_df=get_data(sym_list, start_date, end_date)
 	print(f'Fetch data took {time.time()-start_time} seconds. ')
 	start_time=time.time()
 	result=cluster(movements_df)
@@ -69,7 +87,8 @@ def stocks():
 	    )
 
 	graphJS=json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-	return render_template('index.html', output=result[['Symbol', 'Cluster']].sort_values('Cluster').to_html(index=False), graph=graphJS)
+	images_list=[1, 2, 3, 4, 5, 6]
+	return render_template('index.html', output=result[['Symbol', 'Cluster']].sort_values('Cluster').to_html(index=False), graph=graphJS, images=images_list)
 
 def get_data(sym_list, start_date, end_date):
 	data_source='yahoo'
@@ -106,7 +125,7 @@ def cluster(movement_df):
     current_inertia=0
     movement=normalizer.fit_transform(movement_df)
     reduced_data=PCA(n_components=3).fit_transform(movement)
-    for i in range(2, 15): 
+    for i in range(2, min(len(movement_df.index), 15)): 
         kmeans=KMeans(n_clusters=i)
         kmeans.fit(reduced_data)
         inertia.append(kmeans.inertia_)
