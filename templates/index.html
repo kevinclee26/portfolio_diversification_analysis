@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Stock Market Movement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="hero text-center">
+      <h1>Stock Market Movement</h1>
+      <p>Pure Statistics Diversification</p>
+    </div>
+    <h1>
+      <center>Enter a date range to see how your selected stocks are clustered based on their daily price movement history.</center>
+    </h1>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <aside class="filters">
+            <div class="panel panel-default">
+              <!-- <p>Enter a date range to see how 50 preselected stocks are clustered based on their normalized movement.</p> -->
+              <div class="panel-heading">Filter Search
+              </div>
+              <div class="panel-body">
+                <form action='/stocks' method='post'>
+                  <div class="form-group">
+                    <ul class="list-group" id="filters">
+                      <li class="filter list-group-item">
+                        <label for="date">Enter Start Date</label>
+                        <input class="form-control" id="startdate" type="text" placeholder="2011-05-20" name="startdate">
+                      </li>
+                      <li class="filter list-group-item">
+                        <label for="date">Enter End Date</label>
+                        <input class="form-control" id="enddate" type="text" placeholder="2021-05-20" name="enddate">
+                      </li>
+                    </ul>
+                  </div>
+                  <button id="filter-btn" class="btn btn-primary">Start Analysis</button>
+<!--                   <button id="filter-btn" type='submit' class="btn btn-primary">Filter Table</button> -->
+                </form>
+              </div>
+            </div>
+          </aside>
+        </div>
+        <div class="col-md-2">
+          <div id="table-area" class="">
+            {{ output | safe}}
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div id="chart" class="chart"></div>
+        </div>
+<!--         <div>
+          <img src="{{url_for('static', filename='charts/cluster_0.png')}}">
+          <img src="{{url_for('static', filename='charts/cluster_1.png')}}">
+        </div> -->
+      </div>
+    </div>
+    <footer class="footer">
+      <span class="bottom">Stock Market Movement</span>
+    </footer>
+  </div>
+  <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
+  <!-- <script src="{{url_for('static', filename='js/app.js')}}"></script> -->
+</body>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs={{graph | safe}};
+    Plotly.plot('chart',graphs,{});        
+</script>
+
+</html>
